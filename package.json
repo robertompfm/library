@@ -1,0 +1,26 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "library project for the odin project",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "node-sass styles/sass/main.scss styles/style.css -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robertompfm/library.git"
+  },
+  "keywords": [
+    "library"
+  ],
+  "author": "robertompfm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robertompfm/library/issues"
+  },
+  "homepage": "https://github.com/robertompfm/library#readme",
+  "devDependencies": {
+    "node-sass": "^4.14.1"
+  },
+  "dependencies": {}
+}
