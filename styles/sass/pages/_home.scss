@@ -1,0 +1,29 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: linear-gradient($color-grey-light-1, $color-grey-light-2);
+  background-attachment: fixed;
+}
+
+.title-area {
+  width: 75rem;
+  height: 5rem;
+  // border: solid thin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-size: 2.5rem;
+}
+
+.button-area {
+  width: 75rem;
+  height: 7rem;
+  // border: solid thin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

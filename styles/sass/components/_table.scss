@@ -1,0 +1,79 @@
+.table {
+  border: solid 1px $color-black;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.row {
+  border-bottom: solid thin $color-grey-dark-2;
+  height: 4rem;
+  &--content {
+    background: $color-white;
+    color: $color-black;  
+  
+    &:hover {
+      background: $color-grey-light-2;
+    }
+  
+  }
+
+  &--header {
+    background: $color-blue;
+    color: $color-white;
+  }
+
+  & td,
+  & th {
+    vertical-align: middle;
+  }
+}
+
+.col {
+  &--title,
+  &--author {
+    width: 25rem;
+    // border: solid thin;
+  }
+
+  &--pages,
+  &--read {
+    width: 10rem;
+  }
+
+  &--del {
+    width: 5rem;
+    // border: solid thin;
+  }
+}
+
+
+.del:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.del {
+  padding: 0;
+  // color: $color-grey-dark-2;
+}
+
+.del:active {
+  transition: all .1s;
+  transform: scale(.9);
+}
+
+.yes,
+.no {
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.yes::after {
+  content: "yes";
+  // color: green;
+}
+
+.no::after {
+  content: "no";
+  // color: red;
+}

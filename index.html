@@ -3,11 +3,65 @@
 <head>
   <title>Library</title>
   <meta charset="UTF-8"/>
+  <script src="https://kit.fontawesome.com/a9a7b0e0c1.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Russo+One&display=swap" rel="stylesheet"> 
   <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-  <h1 class="title">Library</h1>
-  <script>
+  
+  <header class="title-area">
+    <h1 class="title">Digital Library</h1>
+  </header>
+
+  <div class="button-area">
+    <button class="btn">Add book</button>
+  </div>
+  
+  <table class="table">
+    <colgroup>
+      <col class="col--title">
+      <col class="col--author">
+      <col class="col--pages">
+      <col class="col--read">
+      <col class="col--del">
+    </colgroup>
+    <tbody>
+      <tr class="row row--header">
+        <th>Title</th>
+        <th>Author</th>
+        <th>Pages</th>
+        <th>Read</th>
+        <th></th>
+      </tr>
+      <tr class="row row--content">
+        <td>Harry Potter</td>
+        <td>J.K. Rowling</td>
+        <td>800</td>
+        <td class="read"><i class="yes"></i></td>
+        <td><i class="fa fa-trash del"></i></td>
+      </tr>
+      <tr class="row row--content">
+        <td>Sapiens</td>
+        <td>Yuval Harari</td>
+        <td>800</td>
+        <td class="read"><i class="yes"></i></td>
+        <td><i class="fa fa-trash del"></i></td>
+      </tr>
+      <tr class="row row--content">
+        <td>Lord of the Rings</td>
+        <td>J.R.R. Tolkien</td>
+        <td>12800</td>
+        <td class="read"><i class="no"></i></td>
+        <td><i class="fa fa-trash del"></i></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="button-area">
+    <button class="btn">Add book</button>
+  </div>
+  
+  <script src="scripts/script.js">
   </script>
 </body>
 </html>

@@ -1,0 +1,155 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit; }
+
+html {
+  font-size: 62.5%; }
+
+body {
+  box-sizing: border-box; }
+
+body,
+button {
+  font-family: 'Russo One', sans-serif; }
+
+.table {
+  border: solid 1px #222;
+  font-size: 1.6rem;
+  text-align: center; }
+
+.row {
+  border-bottom: solid thin #666;
+  height: 4rem; }
+  .row--content {
+    background: ghostwhite;
+    color: #222; }
+    .row--content:hover {
+      background: #ddd; }
+  .row--header {
+    background: dodgerblue;
+    color: ghostwhite; }
+  .row td,
+  .row th {
+    vertical-align: middle; }
+
+.col--title, .col--author {
+  width: 25rem; }
+
+.col--pages, .col--read {
+  width: 10rem; }
+
+.col--del {
+  width: 5rem; }
+
+.del:hover {
+  color: red;
+  cursor: pointer; }
+
+.del {
+  padding: 0; }
+
+.del:active {
+  transition: all .1s;
+  transform: scale(0.9); }
+
+.yes,
+.no {
+  cursor: pointer;
+  transition: all .2s; }
+
+.yes::after {
+  content: "yes"; }
+
+.no::after {
+  content: "no"; }
+
+.btn {
+  padding: 0;
+  background-color: #222;
+  color: ghostwhite;
+  font-size: 1.6rem;
+  height: 3.8rem;
+  width: 12rem;
+  border: solid 1px #666;
+  border-radius: .4rem;
+  cursor: pointer; }
+
+.btn:active {
+  transform: translateY(0.1rem); }
+
+.btn:focus {
+  outline: none; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: linear-gradient(#f7f7f7, #ddd);
+  background-attachment: fixed; }
+
+.title-area {
+  width: 75rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.title {
+  font-size: 2.5rem; }
+
+.button-area {
+  width: 75rem;
+  height: 7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
