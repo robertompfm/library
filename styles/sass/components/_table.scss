@@ -54,11 +54,11 @@
 
 .del {
   padding: 0;
+  transition: all .1s;
   // color: $color-grey-dark-2;
 }
 
 .del:active {
-  transition: all .1s;
   transform: scale(.9);
 }
 
@@ -76,4 +76,18 @@
 .no::after {
   content: "no";
   // color: red;
+}
+
+.read {
+  padding: 0;
+  transition: all .3s;
+  cursor: pointer;
+}
+
+.green-hover:hover {
+  color: green;
+}
+
+.red-hover:hover {
+  color: red;
 }

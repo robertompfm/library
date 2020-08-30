@@ -96,10 +96,10 @@ button {
   cursor: pointer; }
 
 .del {
-  padding: 0; }
+  padding: 0;
+  transition: all .1s; }
 
 .del:active {
-  transition: all .1s;
   transform: scale(0.9); }
 
 .yes,
@@ -112,6 +112,17 @@ button {
 
 .no::after {
   content: "no"; }
+
+.read {
+  padding: 0;
+  transition: all .3s;
+  cursor: pointer; }
+
+.green-hover:hover {
+  color: green; }
+
+.red-hover:hover {
+  color: red; }
 
 .btn {
   padding: 0;
@@ -129,6 +140,54 @@ button {
 
 .btn:focus {
   outline: none; }
+
+.dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  border: solid 1px;
+  background-color: rgba(0, 0, 0, 0.4); }
+  .dialog__window {
+    position: absolute;
+    padding: 2rem;
+    top: 50%;
+    left: 50%;
+    background-color: #f7f7f7;
+    width: 40rem;
+    height: 40rem;
+    transform: translate(-50%, -50%);
+    border: #666 solid 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center; }
+  .dialog__title {
+    font-size: 2.4rem; }
+  .dialog__form {
+    font-size: 1.6rem;
+    height: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start; }
+    .dialog__form input {
+      height: 3.5rem;
+      min-width: 2rem;
+      background-color: ghostwhite;
+      border: 1px solid #666; }
+    .dialog__form div {
+      display: flex;
+      flex-direction: row;
+      justify-content: left;
+      align-items: center; }
+  .dialog__close {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    cursor: pointer; }
 
 body {
   display: flex;
