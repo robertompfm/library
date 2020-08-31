@@ -134,21 +134,24 @@ button {
   border: solid 1px #666;
   border-radius: .4rem;
   cursor: pointer; }
-
-.btn:active {
-  transform: translateY(0.1rem); }
-
-.btn:focus {
-  outline: none; }
+  .btn:hover {
+    opacity: .9; }
+  .btn:active {
+    transform: translateY(0.1rem); }
+  .btn:focus {
+    outline: none; }
+  .btn--save {
+    background-color: dodgerblue; }
 
 .dialog {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;
+  bottom: 0;
   border: solid 1px;
-  background-color: rgba(0, 0, 0, 0.4); }
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none; }
   .dialog__window {
     position: absolute;
     padding: 2rem;
@@ -175,6 +178,7 @@ button {
     .dialog__form input {
       height: 3.5rem;
       min-width: 2rem;
+      padding: 1rem;
       background-color: ghostwhite;
       border: 1px solid #666; }
     .dialog__form div {

@@ -8,13 +8,20 @@
   border: solid 1px $color-grey-dark-2;
   border-radius: .4rem;
   cursor: pointer;
+
+  &:hover {
+    opacity: .9;
+  }
+
+  &:active {
+    transform: translateY(.1rem);
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &--save {
+    background-color: $color-blue;
+  }
 } 
-
-
-.btn:active {
-  transform: translateY(.1rem);
-}
-
-.btn:focus {
-  outline: none;
-}

@@ -2,40 +2,25 @@
 let myLibrary = [];
 const TABLE_BODY = document.querySelector(".table").querySelector("tbody");
 
-// BOOK CLASS
-// Constructor
+
+// ==== BOOK CLASS ====
+// CONSTRUCTOR
 function Book(title, author, pages, read) {
-  // attributes
+  // ATTRIBUTES
   this.title = title;
   this.author = author;
   this.pages = pages;
   this.read = read;
 }
 
-// methods
+// METHODS
 Book.prototype.info = function() {
   let readStr = this.read ? "read" : "not read yet";
   let infoStr = `${this.title} by ${this.author}, ${this.pages} pages, ${readStr}`;
   console.log(infoStr);
 }
-  
 
-// FUNCTIONS
-// add book function
-function addBookToLibrary(title, author, pages, read) {
-  myLibrary.push(new Book(title, author, pages, read));
-}
-
-// render all books
-function render() {
-
-  myLibrary.forEach(book => {
-    renderABook(book);
-  });
-}
-
-// render a book
-function renderABook(book) {
+Book.prototype.render = function(tableBody) {
   // creating elements
   let row = document.createElement("tr");
   let title = document.createElement("td");
@@ -47,10 +32,10 @@ function renderABook(book) {
   let trash_icon = document.createElement("i");
   
   // setting the text
-  title.textContent = book.title;
-  author.textContent = book.author;
-  pages.textContent = book.pages;
-  read_span.textContent = book.read ? "yes" : "no";
+  title.textContent = this.title;
+  author.textContent = this.author;
+  pages.textContent = this.pages;
+  read_span.textContent = this.read ? "yes" : "no";
   
   // adding classes
   row.classList.add("row");
@@ -59,7 +44,7 @@ function renderABook(book) {
   trash_icon.classList.add("fa-trash");
   trash_icon.classList.add("del");
   read_span.classList.add("read");
-  read_span.classList.add(book.read ? "green-hover" : "red-hover");
+  read_span.classList.add(this.read ? "green-hover" : "red-hover");
 
   // appending childs
   read.appendChild(read_span); 
@@ -69,15 +54,65 @@ function renderABook(book) {
   row.appendChild(pages);
   row.appendChild(read);
   row.appendChild(trash);
-  TABLE_BODY.appendChild(row);
+  tableBody.appendChild(row);
+}
+  
+
+
+// ==== LIBRARY CLASS ====
+// CONSTRUCTOR
+function Library() {
+  // ATTRIBUTES
+  this.books = [];
 }
 
-// test
-theHobbit = new Book("The Hobbit", "J.R.R. Tolkien", 295, false);
-sapiens = new Book("Sapians", "Yuval Noah Harari", 443, true);
-addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, false);
-addBookToLibrary("Sapiens", "Yuval Noah Harari", 443, true);
-// theHobbit.info();
-// console.log(myLibrary)
-render();
-console.log(TABLE_BODY);
+// METHODS
+Library.prototype.addBook = function(book) {
+  this.books.push(book);
+}
+
+Library.prototype.renderAllBooks = function(tableBody) {
+  this.books.forEach(book => book.render(tableBody));
+}
+
+
+
+// ==== PAGE ====
+// elements
+let library = new Library();
+const tableBody = document.querySelector(".table").querySelector("tbody");
+
+const dialog = document.querySelector(".dialog");
+const addBookBtns = document.querySelectorAll(".btn--add");
+const saveBookBtn = document.querySelector(".btn--save");
+const feedback = document.querySelector(".feedback");
+const closeBtn = document.querySelector(".dialog__close");
+
+const newBookForm = {
+  title: document.querySelector("#title-inpt"),
+  author: document.querySelector("#author-inpt"),
+  pages: document.querySelector("#pages-inpt"),
+  read: document.querySelector("#read-checkbox")
+}
+
+// METHODS
+let setEventListeners = function() {
+  addBookBtns.forEach(btn => {
+    btn.addEventListener("click", openDialog);
+  });
+  closeBtn.addEventListener("click", closeDialog);    
+};
+
+let openDialog = function() {
+  newBookForm["title"].value = "";
+  newBookForm["author"].value = "";
+  newBookForm["pages"].value = "";
+  newBookForm["read"].checked = false;
+  dialog.style.display = "block";
+};
+
+let closeDialog = function() {
+  dialog.style.display = "none";
+};
+
+setEventListeners();
