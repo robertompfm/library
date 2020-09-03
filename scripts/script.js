@@ -46,6 +46,9 @@ Book.prototype.render = function(tableBody) {
   read_span.classList.add("read");
   read_span.classList.add(this.read ? "green-hover" : "red-hover");
 
+  // adding event listener
+  trash_icon.addEventListener("click", removeBook);
+
   // appending childs
   read.appendChild(read_span); 
   trash.appendChild(trash_icon);
@@ -72,6 +75,9 @@ Library.prototype.addBook = function(book) {
 }
 
 Library.prototype.renderAllBooks = function(tableBody) {
+  while (tableBody.firstChild) {
+    tableBody.removeChild(tableBody.lastChild);
+  }
   this.books.forEach(book => book.render(tableBody));
 }
 
@@ -100,7 +106,8 @@ let setEventListeners = function() {
   addBookBtns.forEach(btn => {
     btn.addEventListener("click", openDialog);
   });
-  closeBtn.addEventListener("click", closeDialog);    
+  closeBtn.addEventListener("click", closeDialog);
+  saveBookBtn.addEventListener("click", saveBook); 
 };
 
 let openDialog = function() {
@@ -108,6 +115,7 @@ let openDialog = function() {
   newBookForm["author"].value = "";
   newBookForm["pages"].value = "";
   newBookForm["read"].checked = false;
+  feedback.textContent = "";
   dialog.style.display = "block";
 };
 
@@ -115,4 +123,63 @@ let closeDialog = function() {
   dialog.style.display = "none";
 };
 
+let saveBook = function() {
+  // get input values
+  let title = newBookForm["title"].value;
+  let author = newBookForm["author"].value;
+  let pages = newBookForm["pages"].value;
+  let read = newBookForm["read"].checked;
+
+  // validate values
+  if (!validateTitle(title)) return;
+  if (!validateAuthor(author)) return;
+  if (!validatePages(pages)) return;
+
+  // create a new book and add to library
+  let newBook = new Book(title, author, pages, read);
+  library.addBook(newBook);
+  library.renderAllBooks(tableBody);
+  closeDialog();
+}
+
+let removeBook = function(e) {
+  console.log(e.target.parentElement.parentElement);
+} 
+
+let validateTitle = function(title) {
+  if (title === "") {
+    feedback.textContent = "Title field is empty"
+    return false;
+  } else {
+    feedback.textContent = "";
+    return true;
+  }
+}
+
+let validateAuthor = function(author) {
+  if (author === "") {
+    feedback.textContent = "Author field is empty"
+    return false;
+  } else {
+    feedback.textContent = "";
+    return true;
+  }
+}
+
+let validatePages = function(pages) {
+  if (pages === "") {
+    feedback.textContent = "Pages field requires a number"
+    return false;
+  } else if (pages < 1) {
+    feedback.textContent = "Number of pages can't be smaller than 1"
+    return false;
+  } else {
+    feedback.textContent = "";
+    return true;
+  }
+}
+
+// INITIALIZING
 setEventListeners();
+library.addBook(new Book("Sapiens", "Yuval Noah Harari", "443", true));
+library.renderAllBooks(tableBody);

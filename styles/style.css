@@ -193,6 +193,10 @@ button {
     font-size: 2rem;
     cursor: pointer; }
 
+.feedback {
+  color: red;
+  font-size: 1.6rem; }
+
 body {
   display: flex;
   flex-direction: column;
