@@ -1,5 +1,25 @@
+// FIREBASE
+// Your web app's Firebase configuration
+(function() {
+  let firebaseConfig = {
+    apiKey: "AIzaSyBVdPTGJ7YeBgbdrH-o3z_P4Fux9uCrtxE",
+    authDomain: "digitallibrary-39544.firebaseapp.com",
+    databaseURL: "https://digitallibrary-39544.firebaseio.com",
+    projectId: "digitallibrary-39544",
+    storageBucket: "digitallibrary-39544.appspot.com",
+    messagingSenderId: "881741457024",
+    appId: "1:881741457024:web:3918c662758780836f2865",
+    measurementId: "G-015J0EQPB7"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);  
+})();
+
+
 // GLOBAL VARIABLES
 let myLibrary = [];
+const FIREBASE_ON = true;
+const LOCAL_STORAGE_ON = false;
 const TABLE_BODY = document.querySelector(".table").querySelector("tbody");
 
 
@@ -20,16 +40,16 @@ function Book(id, title, author, pages, read) {
 // CONSTRUCTOR
 function Library() {
   // ATTRIBUTES
-  this.localStorage;
   this.books = [];
   this.hasLocalStorage = storageAvailable("localStorage") ? true : false;
-  if (this.hasLocalStorage) {
-    this.localStorage = window["localStorage"];
-    this.loadBooksFromLocalStorage();
-  }
 }
 
 // METHODS
+Library.prototype.start = function() {
+  this.loadBooks();
+  this.renderAllBooks(TABLE_BODY);
+}
+
 Library.prototype.saveBooksOnLocalStorage = function() {
   this.localStorage.setItem("books", JSON.stringify(this.books)); 
 }
@@ -41,59 +61,50 @@ Library.prototype.loadBooksFromLocalStorage = function() {
   }
 }
 
+Library.prototype.saveBooksOnFirebase = function() {
+  this.firebaseDB.set(JSON.stringify(this.books));
+}
+
+Library.prototype.loadBooksFromFirebase = function() {
+  let that = this;
+  this.firebaseDB.once("value").then(function(snapshot) {
+    let retrieved = JSON.parse(snapshot.val());
+    if (retrieved) {
+      render(retrieved, TABLE_BODY);
+      that.books = retrieved;
+    } else {
+      this.books = [];
+    }
+  });
+}
+
+Library.prototype.loadBooks = function() {
+  if (FIREBASE_ON) {
+    this.firebaseDB = firebase.database().ref("books");
+    this.loadBooksFromFirebase();
+  } else if (LOCAL_STORAGE_ON && this.hasLocalStorage) {
+    this.localStorage = window["localStorage"];
+    this.loadBooksFromLocalStorage();
+  } else {
+    LOCAL_STORAGE_ON = false;
+  }
+}
+
+Library.prototype.saveChanges = function() {
+  if (FIREBASE_ON) {
+    this.saveBooksOnFirebase();
+  } else if (LOCAL_STORAGE_ON) {
+    this.saveBooksOnLocalStorage();
+  }
+}
+
 Library.prototype.addBook = function(book) {
   this.books.push(book);
-  this.saveBooksOnLocalStorage();
+  this.saveChanges();
 }
 
 Library.prototype.renderAllBooks = function(tableBody) {
-  while (tableBody.firstChild) {
-    tableBody.removeChild(tableBody.lastChild);
-  }
-  
-  this.books.forEach(book => {
-    // creating elements
-    let row = document.createElement("tr");
-    let title = document.createElement("td");
-    let author = document.createElement("td");
-    let pages = document.createElement("td");
-    let read = document.createElement("td");
-    let readSpan = document.createElement("span");
-    let trash = document.createElement("td");
-    let trashIcon = document.createElement("i");
-    
-    // setting the text
-    title.textContent = book.title;
-    author.textContent = book.author;
-    pages.textContent = book.pages;
-    readSpan.textContent = book.read ? "yes" : "no";
-    
-    // adding classes
-    row.classList.add("row");
-    row.classList.add("row--content");
-    trashIcon.classList.add("fa");
-    trashIcon.classList.add("fa-trash");
-    trashIcon.classList.add("del");
-    readSpan.classList.add("read");
-    readSpan.classList.add(book.read ? "green-hover" : "red-hover");
-
-    // adding data attribute
-    row.setAttribute("data-id", book.id);
-    readSpan
-    // adding event listener
-    trashIcon.addEventListener("click", removeBook);
-    readSpan.addEventListener("click", toggleRead);
-
-    // appending childs
-    read.appendChild(readSpan); 
-    trash.appendChild(trashIcon);
-    row.appendChild(title);
-    row.appendChild(author);
-    row.appendChild(pages);
-    row.appendChild(read);
-    row.appendChild(trash);
-    tableBody.appendChild(row);
-    });
+  render(this.books, TABLE_BODY);
 }
 
 Library.prototype.getNextId = function() {
@@ -110,7 +121,7 @@ Library.prototype.removeBookById = function(id) {
   let idArrays = this.books.map(book => book.id);
   let idx = idArrays.indexOf(id);
   this.books.splice(idx, 1);
-  this.saveBooksOnLocalStorage();
+  this.saveChanges();
   return idx;
 }
 
@@ -118,7 +129,7 @@ Library.prototype.toggleReadStatusOfABookById = function(id) {
   let idArrays = this.books.map(book => book.id);
   let idx = idArrays.indexOf(id);
   this.books[idx].read = (!this.books[idx].read);
-  this.saveBooksOnLocalStorage();
+  this.saveChanges();
   return idx;
 }
 
@@ -178,7 +189,6 @@ let saveBook = function() {
 
   // create a new book and add to library
   let newBook = new Book(id, title, author, pages, read);
-  console.log(newBook instanceof Book);
   library.addBook(newBook);
   library.renderAllBooks(tableBody);
   closeDialog();
@@ -231,6 +241,60 @@ let validatePages = function(pages) {
   }
 }
 
+function render(books, tableBody) {
+  while (tableBody.firstChild) {
+    tableBody.removeChild(tableBody.lastChild);
+  }
+    books.forEach(book => {
+    renderABook(book, tableBody);
+  });
+}
+
+
+function renderABook(book, tableBody) {
+  // creating elements
+  let row = document.createElement("tr");
+  let title = document.createElement("td");
+  let author = document.createElement("td");
+  let pages = document.createElement("td");
+  let read = document.createElement("td");
+  let readSpan = document.createElement("span");
+  let trash = document.createElement("td");
+  let trashIcon = document.createElement("i");
+
+  // setting the text
+  title.textContent = book.title;
+  author.textContent = book.author;
+  pages.textContent = book.pages;
+  readSpan.textContent = book.read ? "yes" : "no";
+
+  // adding classes
+  row.classList.add("row");
+  row.classList.add("row--content");
+  trashIcon.classList.add("fa");
+  trashIcon.classList.add("fa-trash");
+  trashIcon.classList.add("del");
+  readSpan.classList.add("read");
+  readSpan.classList.add(book.read ? "green-hover" : "red-hover");
+
+  // adding data attribute
+  row.setAttribute("data-id", book.id);
+  readSpan
+  // adding event listener
+  trashIcon.addEventListener("click", removeBook);
+  readSpan.addEventListener("click", toggleRead);
+
+  // appending childs
+  read.appendChild(readSpan); 
+  trash.appendChild(trashIcon);
+  row.appendChild(title);
+  row.appendChild(author);
+  row.appendChild(pages);
+  row.appendChild(read);
+  row.appendChild(trash);
+  tableBody.appendChild(row);
+}
+
 
 // function to check if storage is available
 function storageAvailable(type) {
@@ -262,19 +326,4 @@ function storageAvailable(type) {
 
 // INITIALIZING
 setEventListeners();
-// library.addBook(new Book(1, "Sapiens", "Yuval Noah Harari", "443", true));
-library.renderAllBooks(tableBody);
-
-// storage = window["localStorage"];
-// storage.setItem("books", JSON.stringify([]));
-// storage.setItem("books", JSON.stringify([1, 2]));
-// let test = storage.getItem("books");
-// if (!test) {
-//   console.log("No item");
-// } else {
-//   console.log(JSON.parse(test));
-//   console.log("Has item");
-//   storage.removeItem("books");
-// }
-
-new Book(1, "w", "w", 12, true).ren
+library.start();
